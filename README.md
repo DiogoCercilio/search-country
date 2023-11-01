@@ -5,6 +5,9 @@ An apllication that searches for Countries information
 ###### Preview
 ![Preview](/preview.gif "Application Preview")
 
+## Live version:
+https://search-country-one.vercel.app
+
 ## Installing
 
 ```sh

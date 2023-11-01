@@ -5,6 +5,7 @@ import CountryList from './country-list'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useQuery } from '@tanstack/react-query'
 import { SearchContext } from '@/context/search-context'
+import { errorMessages } from '@/config/error-messages'
 
 const MIN_SEARCH_LEN = 3 // Start searching after typing three characters
 const SEARCH_DELAY_MS = 500 // Debouncing time to avoid unnecessary API requests when search
@@ -17,9 +18,15 @@ function SearchArea(): ReactElement {
     const [search, setSearch] = useState<string>("")
     const debouncedSearch = useDebounce(search, SEARCH_DELAY_MS)
     const queryKey = ['country_results', debouncedSearch]
+    const getError = (statusCode: number)=> errorMessages[statusCode] || errorMessages[500]
+
     const queryFn = async () => {
         if (!debouncedSearch) return
-        const response = await fetch(`/api/country?search=${debouncedSearch}`, { cache: 'no-cache' })
+        const response = await fetch(`/api/country?search=${debouncedSearch}`, { cache: 'no-cache' }).catch(err=> err)
+
+        if(response.status !== 200) {
+            throw new Error(getError(response.status))
+        }
         return await response.json()
     }
     const { data, refetch, isError, error, isLoading } = useQuery({ queryKey, queryFn, enabled: false })
@@ -52,12 +59,12 @@ function SearchArea(): ReactElement {
                 onChange={(e) => setSearch(e.currentTarget.value)}
             />
 
-            {data && <CountryList search={search} countries={data} />}
+            {data && data.length && <CountryList search={search} countries={data} />}
             {isLoading && <div className="justify-center items-center flex flex-1">
                 <Loader size={25} color={'#ACCEE2'} />
             </div>
             }
-            {isError && <>{JSON.stringify(error)}</>}
+            {isError && <p className="text-gray-600 text-center">{error.message}</p>}
         </div>
     )
 }
