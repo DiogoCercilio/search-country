@@ -2,6 +2,9 @@
 # Search Country
 An apllication that searches for Countries information
 
+###### Preview
+![Preview](/preview.gif "Application Preview")
+
 ## Installing
 
 ```sh
