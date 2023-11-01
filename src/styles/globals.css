@@ -1,3 +1,54 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+body {
+    background-image: linear-gradient(#fff 10%, #eaefff);
+    box-shadow: 0 80px 0 #1A3C4C inset;
+}
+
+h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #000;
+    font-family: var(--bangers);
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1.3em;    
+}
+
+h2, p {
+    font-family: var(--opensans);
+    color: #1a3c4c;
+}
+
+main {
+    width: 1400px;
+    max-width: 98%;
+    min-height: calc(100vh - 40px);
+    margin: 0 auto;
+    background-color: #fff;
+    border-top: 2px solid #1A3C4C;
+    box-shadow: 0 30px 24px -8px rgba(0,40,40,.1);
+}
+
+ul.list-countries li {
+    color: #1A3C4C;
+    line-height: 34px;
+    font-family: var(--opensans);
+    background: #f8f8ed;
+    border: 1px solid #f1f1e6;
+    margin-bottom: 4px;
+    padding: 10px;    
+    transition: .3s all ease;
+}
+
+ul.list-countries li:hover {
+    background: #f1f1e6;
+    padding-left: 24px;    
+}
+
+.search-wrapper {
+    min-height: calc(100vh - 140px);
+}
