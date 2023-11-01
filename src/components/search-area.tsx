@@ -6,6 +6,7 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { useQuery } from '@tanstack/react-query'
 import { SearchContext } from '@/context/search-context'
 import { errorMessages } from '@/config/error-messages'
+import Centered from './centered'
 
 const MIN_SEARCH_LEN = 3 // Start searching after typing three characters
 const SEARCH_DELAY_MS = 500 // Debouncing time to avoid unnecessary API requests when search
@@ -38,7 +39,7 @@ function SearchArea(): ReactElement {
     }, [debouncedSearch, refetch]);
 
     return (
-        <div className="search-wrapper justify-center">
+        <div className="search-wrapper justify-center" data-testid="search-area">
             <Image
                 width={100}
                 height={60}
@@ -46,25 +47,24 @@ function SearchArea(): ReactElement {
                 src="https://visto.ai/wp-content/uploads/2019/10/wide_logo.svg"
                 alt="Logo"
             />
-            <h1 className="text-3xl text-center">
+            <h1 className="text-4xl text-center">
                 Search Countries
             </h1>
-            <h2 className="text-center mb-4">
+            <h2 className="text-center mb-8 mt-2">
                 Type a name of a Country and see it&apos;s all details
             </h2>
 
             <TextInput
+                data-testid="search-area-input"
                 className="mb-10"
                 placeholder="(the letter case will be ignored)"
                 onChange={(e) => setSearch(e.currentTarget.value)}
             />
 
+            {(!data && !isLoading) && <Centered><p className="text-gray-400 text-center">Type something on the input above.</p></Centered>}
             {data && data.length && <CountryList search={search} countries={data} />}
-            {isLoading && <div className="justify-center items-center flex flex-1">
-                <Loader size={25} color={'#ACCEE2'} />
-            </div>
-            }
-            {isError && <p className="text-gray-600 text-center">{error.message}</p>}
+            {isLoading && <Centered><Loader size={25} color={'#ACCEE2'} /></Centered>}
+            {isError && <Centered><p className="text-gray-600 text-center">{error.message}</p></Centered>}
         </div>
     )
 }

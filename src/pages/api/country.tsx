@@ -7,5 +7,11 @@ import { NextApiRequest, NextApiResponse } from "next";
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     const body = await fetch(`${process.env.COUNTRIES_API_URL}/name/${req.query.search}`, { cache: 'force-cache' })
-    return res.json(adapt(await body.json()));
+    const response = await body.json()
+
+    if(response.status && response.status !== 200) {
+        res.status(response.status).end()
+    } else {
+        res.json(adapt(response));
+    }
 }
